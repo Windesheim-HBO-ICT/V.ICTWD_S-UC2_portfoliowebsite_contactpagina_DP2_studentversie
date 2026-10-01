@@ -1,35 +1,57 @@
-﻿@{
+﻿@model Portfoliowebsite.Models.ContactFormViewModel
+@{
     ViewData["Title"] = "Contact";
 }
 
-<h1>Contact</h1>
+<section class="contact-intro">
+    <p class="eyebrow">Samenwerken</p>
+    <h1>Stuur mij een bericht</h1>
+    <p>Heb je een vraag over mijn werk of wil je kennismaken? Vul het formulier in. Ik reageer meestal binnen twee werkdagen.</p>
+</section>
 
-<form id="contactForm" asp-action="Index" method="post" novalidate>
-    @Html.AntiForgeryToken()
-    <div class="hp">
-        <label for="website">Laat dit veld leeg</label>
-        <input type="text" id="website" name="website" value="" />
-    </div>
-    <div>
-        <input id="Name" name="Name" placeholder="Naam" tabindex="-1" />
-        <div id="nameErr" class="error"></div>
-    </div>
-    <div>
-        <label for="EmailX">E-mail</label>
-        <input id="Email" name="Email" placeholder="naam@domein.nl" />
-        <div id="emailErr" class="error"></div>
-    </div>
-    <div>
-        <label for="Subject">Onderwerp</label>
-        <input id="Subject" name="Subject" placeholder="Onderwerp" />
-    </div>
-    <div>
-        <label for="Message" aria-hidden="true">Bericht</label> 
-        <textarea id="Message" name="Message" rows="5" placeholder="Je bericht"></textarea>
-        <div id="msgErr" class="error"></div>
-    </div>
-    <div id="liveStatus"></div>
-    <div class="send-button" role="button" onclick="document.getElementById('contactForm').submit()">
-        Versturen
-    </div>
-</form>
+<div class="contact-layout">
+    <form id="contactForm" asp-action="Index" method="get" class="contact-card" novalidate>
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="hp-field">
+            <label asp-for="Website">Website</label>
+            <input asp-for="Website" autocomplete="off" />
+        </div>
+        <div class="form-field">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" autocomplete="name" />
+            <span asp-validation-for="Name" class="field-error"></span>
+        </div>
+        <div class="form-field">
+            <label for="EmailAddress">E-mailadres</label>
+            <input asp-for="Email" autocomplete="email" />
+            <span asp-validation-for="Email" class="field-error"></span>
+        </div>
+        <div class="form-field">
+            <label asp-for="Subject">Onderwerp</label>
+            <input asp-for="Subject" />
+            <span asp-validation-for="Subject" class="field-error"></span>
+        </div>
+        <div class="form-field">
+            <label asp-for="Message">Bericht</label>
+            <textarea asp-for="Message" rows="7" maxlength="500"></textarea>
+            <div class="field-meta"><span>Maximaal 500 tekens</span><span id="characterCount">0/500</span></div>
+            <span asp-validation-for="Message" class="field-error"></span>
+        </div>
+
+        <p id="formStatus" class="form-status"></p>
+        <button class="button-primary" type="submit">Bericht versturen</button>
+    </form>
+
+    <aside class="contact-aside" aria-labelledby="contact-details-title">
+        <h2 id="contact-details-title">Contactgegevens</h2>
+        <p>Zwolle, Nederland</p>
+        <a href="mailto:sam.dev@example.com">sam.dev@example.com</a>
+        <p class="availability">Beschikbaar voor een stageopdracht vanaf februari.</p>
+    </aside>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

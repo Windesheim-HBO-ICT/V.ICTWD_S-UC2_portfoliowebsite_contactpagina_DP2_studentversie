@@ -1,31 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Portfoliowebsite.Models;
 using Portfoliowebsite.Services;
 
-namespace Portfoliowebsite.Controllers
+namespace Portfoliowebsite.Controllers;
+
+public class ContactController : Controller
 {
-    public class ContactController : Controller
+    private readonly IEmailSender _email;
+    public ContactController(IEmailSender email) => _email = email;
+
+    [HttpGet]
+    public IActionResult Index() => View(new ContactFormViewModel());
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Index(ContactFormViewModel model)
     {
-
-        private readonly IEmailSender _email;
-        public ContactController(IEmailSender email) => _email = email;
-
-        public IActionResult Index() => View();
-
-        [HttpPost]
-        public async Task<IActionResult> Index(string Name, string Email, string Subject, string Message)
-        {
-            await _email.SendAsync(Name, Email, Subject, Message);
-
-            TempData["ThanksName"] = Name;
-            TempData["ThanksEmail"] = Email;
-            TempData["ThanksMessage"] = Message;
-
-            return RedirectToAction(nameof(Thanks));
-        }
-
-        public IActionResult Thanks()
+        if (!ModelState.IsValid)
         {
             return View();
         }
+
+        await _email.SendAsync(model.Name, model.Email, model.Subject, model.Message);
+        TempData["ThanksName"] = model.Name;
+        return RedirectToAction(nameof(Thanks));
     }
+
+    [HttpGet]
+    public IActionResult Thanks() => View();
 }

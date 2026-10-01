@@ -1,11 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Bedankt";
-}
-
-<h1>Bedankt!</h1>
-
-<p>Bedankt, @Html.Raw(TempData["ThanksName"]). We nemen contact op via @Html.Raw(TempData["ThanksEmail"]).</p>
-<p>Je bericht:</p>
-<div class="message-preview">@Html.Raw(TempData["ThanksMessage"])</div>
-
-<a href="/contact" role="button">Terug naar formulier</a>
+@{ ViewData["Title"] = "Bedankt"; }
+<section class="thanks-card">
+    <p class="eyebrow">Verzonden</p>
+    <h1>Bedankt, @TempData["ThanksName"]!</h1>
+    <p>Je bericht is ontvangen. Ik neem zo snel mogelijk contact met je op.</p>
+    <a class="button-secondary" asp-controller="Home" asp-action="Index">Terug naar mijn profiel</a>
+</section>
